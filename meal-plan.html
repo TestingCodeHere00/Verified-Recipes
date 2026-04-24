@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping List — Verified Recipes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #fff;
+      color: #1a1a1a;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      border-bottom: 1px solid #ebebeb;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #555;
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: #1a1a1a; }
+
+    /* PAGE HEADER */
+    .mp-header {
+      padding: 40px 48px 32px;
+      border-bottom: 1px solid #ebebeb;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .mp-header-left { flex: 1; }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #aaa;
+      text-decoration: none;
+      margin-bottom: 16px;
+    }
+    .back-link:hover { color: #1a1a1a; }
+    .mp-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .mp-subtitle {
+      font-size: 13px;
+      color: #888;
+    }
+    .mp-recipe-names {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 6px;
+    }
+    .print-btn {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      margin-top: 4px;
+    }
+    .print-btn:hover { background: #333; }
+
+    /* SHOPPING LIST */
+    .mp-content {
+      padding: 40px 48px 80px;
+      max-width: 760px;
+    }
+    .mp-section {
+      margin-bottom: 40px;
+    }
+    .mp-section-title {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ebebeb;
+    }
+    .mp-list {
+      list-style: none;
+    }
+    .mp-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid #f5f5f5;
+      font-size: 14px;
+      color: #1a1a1a;
+    }
+    .mp-list li {
+      cursor: pointer;
+      user-select: none;
+    }
+    .mp-list li::before {
+      content: '';
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #ddd;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .mp-list li.checked::before {
+      background: #1a1a1a;
+      border-color: #1a1a1a;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%23fff' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: 11px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .mp-list li.checked {
+      color: #bbb;
+      text-decoration: line-through;
+      text-decoration-color: #ccc;
+    }
+    .mp-list li.checked .item-source {
+      color: #ccc;
+    }
+    .mp-empty {
+      padding: 80px 48px;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: #ccc;
+    }
+    .item-source {
+      font-size: 11px;
+      color: #aaa;
+      margin-left: 6px;
+      font-style: italic;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid #ebebeb;
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+      text-decoration: none;
+    }
+    .footer-note { font-size: 11px; color: #bbb; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .mp-header { padding: 28px 20px 24px; flex-direction: column; }
+      .print-btn { align-self: flex-start; }
+      .mp-content { padding: 28px 20px 60px; }
+      footer { padding: 24px 20px; }
+    }
+
+    /* PRINT */
+    @media print {
+      nav, footer, .back-link, .print-btn { display: none !important; }
+      .mp-header { border-bottom: 1px solid #ccc; padding: 20px 0; }
+      .mp-content { padding: 24px 0; }
+      .mp-list li { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Verified Recipes</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="Recipes.html">Recipes</a></li>
+    </ul>
+  </nav>
+
+  <!-- HEADER -->
+  <div class="mp-header">
+    <div class="mp-header-left">
+      <a href="Recipes.html" class="back-link">← All Recipes</a>
+      <h1 class="mp-title">Shopping List</h1>
+      <p class="mp-subtitle" id="mp-subtitle"></p>
+      <p class="mp-recipe-names" id="mp-recipe-names"></p>
+    </div>
+    <button class="print-btn" onclick="window.print()">Print</button>
+  </div>
+
+  <!-- LIST -->
+  <div class="mp-content" id="mp-content"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="index.html" class="footer-logo">Verified Recipes</a>
+    <span class="footer-note">Home-tested. Every time.</span>
+  </footer>
+
+  <script>
+    // ── RECIPE DATA (id + title + ingredients only) ──────────────────────────
+    const recipeData = [
+      {
+        id: 'carrot-cucumber-salad',
+        title: 'Carrot Cucumber Salad with Chicken',
+        ingredients: [
+          { items: ['1 boneless, skinless chicken breast', '1 large carrot, ribboned', '1 large cucumber, ribboned', '¼ red onion, thinly sliced', '1 jalapeño, diced (optional)', 'Fresh cilantro, for garnish'] },
+          { items: ['1 tbsp soy sauce', '1 tbsp rice vinegar', '½ tbsp sesame oil', 'Juice of ½ lime'] }
+        ]
+      },
+      {
+        id: 'slow-cooked-chinese-chicken',
+        title: 'Slow Cooked Chinese Chicken with Napa Cabbage',
+        ingredients: [
+          { items: ['1.4 kg whole chicken (or equivalent chicken pieces)'] },
+          { items: ['11 g fine salt', '0.5 g white pepper', '1 g five spice powder', '2 g sugar', '8 g oyster sauce', '8 g light soy sauce', '40 g fresh ginger, thinly sliced', '20 g garlic (about 6 cloves), lightly smashed'] },
+          { items: ['800 g napa cabbage, roughly chopped'] },
+          { items: ['Chili oil, for serving'] }
+        ]
+      },
+      {
+        id: 'steamed-chicken-shiitake',
+        title: 'Steamed Chicken with Shiitake Mushrooms',
+        ingredients: [
+          { items: ['3–4 boneless chicken thighs, chopped into bite-size chunks', '4 dried shiitake mushrooms, soaked and rehydrated', '10–15 dried wood ear mushrooms, soaked and rehydrated', '15 g ginger, thinly sliced', '1 green onion, chopped'] },
+          { items: ['1 tbsp light soy sauce', '1 tbsp oyster sauce', '2 tsp dark soy sauce', '½ tbsp Shaoxing cooking wine', '1 tbsp cornstarch', '1 tsp sugar', '¼ tsp white pepper powder', '1 tsp sesame oil'] }
+        ]
+      },
+      {
+        id: 'jjimdak',
+        title: 'Jjimdak / Korean Braised Chicken',
+        ingredients: [
+          { items: ['3 lb chicken drumsticks', '2 potatoes, peeled and cut into chunks', '1 carrot, sliced', '1 onion, sliced', '7 cloves garlic, sliced or minced', '½ cup soy sauce', '2 tbsp brown sugar', '2 tbsp mirin', '2 tbsp honey', '2 tbsp oyster sauce', '1 tsp sesame seeds'] }
+        ]
+      },
+      {
+        id: 'beef-kebabs',
+        title: 'Beef Kebabs (Oven Baked) with Pita Build',
+        ingredients: [
+          { items: ['2 lb ground beef, 85/15 fat ratio', '¼ cup parsley, finely chopped', '2 tsp onion powder', '1½ tsp garlic powder', '1½ tsp kosher salt', '¾ tsp black pepper', '2 tsp cumin', '2 tsp smoked paprika', '1 tsp coriander', '¼ tsp ground cinnamon', '2 tbsp olive oil', '½ tsp honey'] },
+          { items: ['¾ cup Greek yogurt', '1 tbsp olive oil', '1 tsp honey', 'Salt and pepper, to taste', '1½–2 tbsp dill, finely chopped', 'Optional: extra parsley'] },
+          { items: ['1 small red onion, thinly sliced', '1 medium cucumber, diced', '1 cup grape tomatoes, halved', 'Pita bread', 'Chili oil, for drizzling'] }
+        ]
+      },
+      {
+        id: 'sheet-pan-gnocchi',
+        title: 'Sheet Pan Gnocchi with Sausage & Vegetables',
+        ingredients: [
+          { items: ['1 (16 oz / 450 g) package gnocchi', '1 pint grape tomatoes', '2–3 cups chopped vegetables of choice', '1 lb hot or mild Italian sausage, casings removed', '3 tbsp extra virgin olive oil', '1 tbsp dried oregano', '2 tsp fennel seeds (optional)', 'Kosher salt and black pepper, to taste', '½ cup shredded Parmesan cheese', '2 tbsp fresh lemon juice'] }
+        ]
+      },
+      {
+        id: 'chinese-steamed-fish',
+        title: 'Chinese Steamed Fish',
+        ingredients: [
+          { items: ['1 whole white fish or 2 fillets (sea bass, cod, or tilapia)', '1 (2-inch) piece fresh ginger, julienned', '2–3 stalks scallions, julienned', '2 tbsp light soy sauce', '1 tsp brown sugar', '1 tsp sesame oil', '2 tbsp neutral oil', 'Salt, to taste'] }
+        ]
+      },
+      {
+        id: 'chicken-katsu',
+        title: 'Chicken Katsu (Air Fryer Style)',
+        ingredients: [
+          { items: ['11 oz chicken thighs, boneless and skinless', '½ tsp salt', '½ tsp black pepper', '¾ cup panko breadcrumbs', 'Cooking spray'] },
+          { items: ['1 large egg', '¼ cup all-purpose flour', '½ tsp salt', '½ tsp black pepper', '½ tsp garlic powder', '1.5 tbsp water'] },
+          { items: ['4 tbsp ketchup', '1 tbsp brown sugar', '2 tbsp Worcestershire sauce', '2 tbsp oyster sauce', '½ tbsp garlic powder'] },
+          { items: ['1 cup cooked rice', '2 cups shredded green cabbage'] }
+        ]
+      },
+      {
+        id: 'butter-chicken',
+        title: 'Butter Chicken (Slow Cooker / Instant Pot)',
+        ingredients: [
+          { items: ['30 g butter', '2 onions, chopped', '2 tbsp tomato paste', '2 tbsp garlic paste', '2 tbsp ginger paste', '2 tbsp paprika', '1 tsp cayenne pepper', '2 tbsp garam masala', '1 tsp cumin', '1 tsp coriander', '2 tsp salt', 'A dash of black pepper'] },
+          { items: ['1 can crushed fire-roasted tomatoes', '½ cup water', 'Optional: 1 tbsp chicken bouillon'] },
+          { items: ['32 oz boneless chicken breast, diced', '250 g plain nonfat Greek yogurt', '30 g butter (optional, for finishing)'] }
+        ]
+      },
+      {
+        id: 'braised-eggplant',
+        title: 'Braised Eggplant with Minced Meat',
+        ingredients: [
+          { items: ['250 g eggplant, cut into bite-sized pieces', '1.5 tbsp oil'] },
+          { items: ['2 cloves garlic, minced', '15 g ginger, minced', '60 g leek, thinly sliced', '200 g minced pork', '1 tbsp fermented hot bean paste', 'Dark soy sauce, to taste', '1 tsp fish sauce', '1 pinch sugar', '30 g water', '1 tbsp cornstarch slurry'] }
+        ]
+      },
+      {
+        id: 'cheeseburger-hot-pockets',
+        title: 'Cheeseburger Beef Hot Pockets',
+        ingredients: [
+          { items: ['400 g lean ground beef', '1 medium white onion, diced', '1 tsp garlic powder', '1 tsp smoked paprika', '½ tsp cayenne (optional)', '1 tsp salt', '1 tsp black pepper', '100 ml beef stock', '80 g light cream cheese', '45 g ketchup', '60 g diced pickles', 'Cooking spray'] },
+          { items: ['400 g plain flour', '410 g 0% Greek yogurt'] },
+          { items: ['25 g low-fat grated cheese (per pocket)'] }
+        ]
+      },
+      {
+        id: 'creamy-pesto-pasta',
+        title: 'Creamy Pesto Pasta with Chicken or Shrimp',
+        ingredients: [
+          { items: ['Homemade pesto, enough to coat pasta', 'Chicken breast or shrimp, 2–3 portions', 'Heavy cream, about ½–1 cup', '½ small onion, finely chopped', '2–3 cloves garlic, minced', 'Handful of spinach', 'Pasta of choice (8–10 oz)'] }
+        ]
+      },
+      {
+        id: 'chicken-parmesan',
+        title: 'Chicken Parmesan (Baked)',
+        ingredients: [
+          { items: ['2 large chicken breasts (about 1½ lb)', 'Kosher salt and black pepper, to taste', '¼ cup all-purpose flour', '1 large egg, beaten', '¼ cup panko breadcrumbs', '¼ cup Italian breadcrumbs', '¼ cup grated Parmesan cheese', 'Avocado oil or olive oil spray'] },
+          { items: ['24 oz jar of marinara sauce', '2 cups shredded mozzarella cheese', 'Freshly grated Parmesan, for serving'] }
+        ]
+      },
+      {
+        id: 'crispy-potato-balls',
+        title: 'Crispy Potato Balls',
+        ingredients: [
+          { items: ['3 medium gold potatoes (about 450–500 g)', '6 tbsp cornstarch', '2 tbsp fresh parsley, finely chopped', '1 tsp salt', '½ tsp black pepper', 'Neutral cooking oil, for frying', '3 tbsp grated Parmesan or Gruyère cheese'] }
+        ]
+      },
+      {
+        id: 'miso-glazed-chicken',
+        title: 'Miso Glazed Chicken',
+        ingredients: [
+          { items: ['8 oz chicken thigh or breast, boneless and skinless', '2 tbsp white or red miso paste', '2 tbsp soy sauce', '2 cloves garlic, minced or grated', '½ inch piece fresh ginger, grated', '1 tsp rice wine vinegar', '4 tbsp honey'] }
+        ]
+      },
+      {
+        id: 'mediterranean-chicken',
+        title: 'Mediterranean Chicken with Herb Yogurt Sauce',
+        ingredients: [
+          { items: ['4 skin-on bone-in chicken thighs (about 2 lb)', '2 tbsp olive oil', '2 tbsp tomato paste', '4 cloves garlic, minced', '1 tbsp smoked paprika', '1 tbsp oregano', '¼ tsp cayenne pepper', 'Salt and black pepper, to taste', 'Zest and juice of 1 large lemon'] },
+          { items: ['3 tbsp thick Greek yogurt or labneh', '3 tbsp fresh mint', '2 scallions, roughly chopped', '½ large jalapeño', '1 tbsp olive oil', 'Juice of ½ lemon', 'Salt and pepper, to taste'] }
+        ]
+      },
+      {
+        id: 'boursin-pasta',
+        title: 'Boursin Pasta (Baked Tomato-Cheese Pasta)',
+        ingredients: [
+          { items: ['2 blocks Boursin cheese', '1–2 cups grape tomatoes', '7 oz jar julienned sun-dried tomatoes', '1–2 large handfuls spinach', 'Pasta of choice (8–10 oz)', 'Optional: 7–12 oz chicken, shrimp, or plant-based protein'] }
+        ]
+      },
+      {
+        id: 'thai-red-curry',
+        title: 'Thai Red Curry with Chicken and Eggplant',
+        ingredients: [
+          { items: ['2 tbsp olive oil', '1 tsp garlic, freshly minced', '1 tsp ginger, freshly minced', '½ cup red curry paste', '1 cup chicken stock', '400 ml coconut milk', '4 kaffir lime leaves, finely sliced (optional)', '1 tsp fish sauce', '1 tsp sugar', '1 eggplant, roughly diced', '300 g chicken thigh fillets, cut into bite-sized pieces', '1 cup green beans, trimmed', '½ cup grape tomatoes', '½ cup Thai basil leaves', 'Steamed jasmine rice, to serve', 'Lime wedges, to serve'] }
+        ]
+      },
+      {
+        id: 'beef-pepper-rice',
+        title: 'Beef Pepper Rice',
+        ingredients: [
+          { items: ['10 oz thinly sliced ribeye', '2 cups cooked white rice', '½ onion, sliced', '4 oz canned sweet corn, drained', '1 tbsp butter', 'Green onions, finely chopped', 'Freshly ground black pepper, to taste'] },
+          { items: ['½ tbsp minced garlic', '2 tbsp low-sodium soy sauce', '1 tbsp oyster sauce', '1 tbsp honey', '1 tsp rice vinegar'] }
+        ]
+      },
+      {
+        id: 'chicken-udon-soup',
+        title: 'Chicken Udon Soup',
+        ingredients: [
+          { items: ['70 g udon noodles (fresh or frozen)', '8 oz raw chicken thigh, cut into bite-sized pieces', 'Handful snow white mushrooms, sliced', 'Handful napa cabbage, sliced', '1 tbsp minced garlic', '½ cup chicken broth', '½ cup water', '½ tbsp miso paste', '1 tbsp soy sauce', '½ tsp sesame oil', '1 tbsp salt', '½ tbsp black pepper', '1 tbsp onion powder', 'Green onions, sliced, for garnish'] }
+        ]
+      },
+      {
+        id: 'omelette-sandwich',
+        title: '3 Ingredient Omelette Sandwich',
+        ingredients: [
+          { items: ['1 tbsp mayonnaise', '2 eggs', 'Mortadella slices (about 2–3 slices)', 'Cooking spray', 'Bread or roll of choice'] }
+        ]
+      },
+      {
+        id: 'beef-burger',
+        title: 'Classic Beef Burger',
+        ingredients: [
+          { items: ['3 oz beef burger patty', '1 small red onion, sliced', 'Sliced dill pickles', '1 slice Colby Jack cheese', 'Burger bun'] }
+        ]
+      },
+      {
+        id: 'chuck-roast-tacos',
+        title: 'Chuck Roast Taco Filling',
+        ingredients: [
+          { items: ['3 lb beef chuck roast', '1 yellow onion, thinly sliced', 'Salt and black pepper, to taste', '1 packet taco seasoning', '17 oz beef broth', '2 chipotle peppers in adobo, chopped', '4–5 garlic cloves, minced'] }
+        ]
+      },
+      {
+        id: 'one-pan-lasagna',
+        title: 'One Pan Lasagna Pasta',
+        ingredients: [
+          { items: ['2 tbsp olive oil', '1 onion, diced', '2 cloves garlic, minced', '½ lb Italian sausage, casings removed', '½ lb ground beef', 'Salt and black pepper, to taste', '½ tbsp Italian seasoning', '2 tbsp tomato paste', '2 cups marinara sauce', '3–4 cups chicken broth', '½ cup heavy cream', '½ box lasagna noodles, broken into pieces', '½ cup grated Parmesan cheese', '1 cup shredded mozzarella cheese', '¼ cup fresh basil, chopped'] }
+        ]
+      },
+      {
+        id: 'korean-potatoes',
+        title: 'Korean Banchan-Style Potatoes',
+        ingredients: [
+          { items: ['3 medium potatoes (about 450–500 g), peeled and cut into cubes', '2 tbsp honey', '1 tbsp brown sugar', '1 tbsp soy sauce', '1 tsp minced garlic', '3–4 tbsp water'] }
+        ]
+      },
+      {
+        id: 'teriyaki-chicken',
+        title: 'Teriyaki Chicken',
+        ingredients: [
+          { items: ['4 chicken thighs (bone-in or boneless)', '¼ cup soy sauce', '2 tbsp honey', '½ tbsp black pepper', '½ tbsp ground ginger', '½ tbsp cayenne pepper', '½ tbsp white pepper', '4 garlic cloves, minced', '½ tbsp salt'] },
+          { items: ['¼ cup soy sauce', '2 tbsp honey', '1 tbsp rice vinegar', '2 tbsp cornstarch slurry', '½ tbsp black pepper', '½ tbsp sesame oil'] }
+        ]
+      },
+      {
+        id: 'vietnamese-pork-chops',
+        title: 'Vietnamese Pork Chops',
+        ingredients: [
+          { items: ['3 pounds bone-in pork loin end chops (about 5 pork chops)', '3 tablespoons brown sugar', '2 tablespoons minced lemongrass', '2 tablespoons minced garlic (3 large cloves)', '1 tablespoon minced shallot', '2 tablespoons sweetened condensed milk (optional)', '3 tablespoons fish sauce', '2 tablespoons oyster sauce', '1 tablespoon soy sauce', '1 teaspoon onion powder', '¼ teaspoon ground black pepper'] },
+          { items: ['¼ cup neutral high smoke point oil', '4 scallions, finely chopped', '¼ teaspoon salt'] },
+          { items: ['1½ tablespoons palm sugar', '2 tablespoons hot water', '1 tablespoon fish sauce', '1 tablespoon rice vinegar', '1 tablespoon freshly squeezed lime juice', '1 clove garlic, minced'] },
+          { items: ['Sliced cucumbers', 'Sliced tomatoes', 'Steamed jasmine rice'] }
+        ]
+      },
+      {
+        id: 'mapo-tofu',
+        title: 'Mapo Tofu',
+        ingredients: [
+          { items: ['500 g medium-firm or soft tofu', '250 g ground pork', '4 tbsp neutral oil', 'Chili oil, to taste', '1 tbsp Sichuan peppercorns', '2 tbsp doubanjiang (spicy fermented broad bean paste)', '4 garlic cloves, finely chopped', '1 thumb-sized piece ginger, grated', '2 shallots, finely diced', '250 ml chicken stock', '1 tbsp light soy sauce', '1 tsp dark soy sauce', '1 tsp sugar', '1 tsp black vinegar', '2 tsp cornstarch mixed with water', '2 spring onions (green onions), sliced'] }
+        ]
+      }
+    ];
+
+    // ── INGREDIENT PARSING ────────────────────────────────────────────────────
+
+    const UNICODE_FRACTIONS = { '¼':0.25,'½':0.5,'¾':0.75,'⅓':0.3333,'⅔':0.6667,'⅛':0.125,'⅜':0.375,'⅝':0.625,'⅞':0.875 };
+
+    const UNIT_MAP = {
+      'tablespoons':'tbsp','tablespoon':'tbsp','tbsps':'tbsp','tbsp':'tbsp',
+      'teaspoons':'tsp','teaspoon':'tsp','tsps':'tsp','tsp':'tsp',
+      'cups':'cup','cup':'cup',
+      'grams':'g','gram':'g','g':'g',
+      'kilograms':'kg','kilogram':'kg','kg':'kg',
+      'pounds':'lb','pound':'lb','lbs':'lb','lb':'lb',
+      'ounces':'oz','ounce':'oz','oz':'oz',
+      'milliliters':'ml','milliliter':'ml','ml':'ml',
+      'cloves':'clove','clove':'clove',
+      'pieces':'count','piece':'count',
+      'pinches':'tsp','pinch':'tsp',
+      'dashes':'tsp','dash':'tsp',
+      'handfuls':'count','handful':'count',
+      'stalks':'count','stalk':'count',
+      'blocks':'count','block':'count',
+      'cans':'can','can':'can',
+      'jars':'can','jar':'can',
+      'packets':'can','packet':'can',
+      'slices':'count','slice':'count',
+    };
+
+    const PANTRY_KEYWORDS = [
+      'salt','sugar','pepper','spice','powder','seasoning','extract',
+      'sauce','paste','oil','vinegar','syrup','honey','molasses',
+      'flour','starch','cornstarch','breadcrumb','panko','baking',
+      'soy','miso','ketchup','mayo','mayonnaise','mustard','worcestershire',
+      'stock','broth','bouillon','water',
+      'yogurt','butter','ghee','cream cheese',
+      'milk','cream','condensed',
+      'wine','sake','mirin','vinegar',
+      'spray','pesto','marinara','coconut',
+      'doubanjiang','bean paste','curry paste',
+    ];
+
+    const SYNONYMS = {
+      'spring onions': 'scallions',
+      'spring onion': 'scallions',
+      'green onions': 'scallions',
+      'green onion': 'scallions',
+      'fresh ginger': 'ginger',
+      'fresh cilantro': 'cilantro',
+      'freshly squeezed lime juice': 'lime juice',
+      'fresh lemon juice': 'lemon juice',
+      'fresh parsley': 'parsley',
+      'fresh mint': 'mint',
+      'fresh basil': 'basil',
+    };
+
+    const PREP_RE = /,\s*(?:finely|roughly|thinly|lightly|freshly|coarsely|gently|briefly|about|chopped|minced|diced|sliced|grated|julienned|beaten|peeled|trimmed|shredded|crumbled|soaked|drained|rehydrated|halved|quartered|smashed|mashed|crushed|pressed|toasted|roasted|softened|melted|mixed|whisked|divided|rinsed|squeezed|deboned|deveined|patted|or to taste|if desired|if using|plus|room temp|for garnish|store-bought|at room temp|lightly smashed|seeded).*/i;
+
+    const LEADING_PREP_RE = /^(sliced|steamed|drained|chopped|minced|diced|grated|julienned|shredded|crushed|fresh|dried|canned|cooked|toasted|roasted|quick-pickled|thinly sliced|finely chopped|freshly ground)\s+/i;
+
+    function normalizeFractions(s) {
+      // Replace unicode fraction chars
+      s = s.replace(/[¼½¾⅓⅔⅛⅜⅝⅞]/g, m => UNICODE_FRACTIONS[m]);
+      // Combine mixed numbers: "1 0.5" → 1.5
+      s = s.replace(/(\d+)\s+(0\.\d+)/g, (_, a, b) => String(parseFloat(a) + parseFloat(b)));
+      // Ranges: "3–4" or "3-4" → keep lower
+      s = s.replace(/(\d+(?:\.\d+)?)\s*[–\-]\s*\d+(?:\.\d+)?(?!\s*(?:inch|cm|mm))/g, '$1');
+      return s;
+    }
+
+    function parseIngredient(raw) {
+      let s = normalizeFractions(raw);
+      // Strip parentheticals
+      s = s.replace(/\(.*?\)/g, '').replace(/\s+/g, ' ').trim();
+      // Strip trailing qualifiers
+      s = s.replace(/,?\s*(to taste|for serving|for garnish|optional|as needed|if desired|if using|adjust to taste)\s*$/i, '').trim();
+
+      // Extract leading number
+      const numMatch = s.match(/^(\d+(?:\.\d+)?)\s*/);
+      let qty = null;
+      if (numMatch) {
+        qty = parseFloat(numMatch[1]);
+        s = s.slice(numMatch[0].length);
+      }
+
+      // Extract unit
+      let unit = null;
+      const unitMatch = s.match(/^([a-zA-Z]+)\s+/);
+      if (unitMatch) {
+        const cand = unitMatch[1].toLowerCase();
+        if (UNIT_MAP[cand] !== undefined) {
+          unit = UNIT_MAP[cand];
+          s = s.slice(unitMatch[0].length);
+        }
+      }
+      if (qty !== null && unit === null) unit = 'count';
+
+      // Extract name: strip prep notes after comma, strip leading prep words
+      let name = s.replace(PREP_RE, '').trim().toLowerCase();
+      name = name.replace(LEADING_PREP_RE, '');
+
+      // Handle "garlic cloves" → unit=clove
+      if (name.endsWith(' cloves') || name.endsWith(' clove')) {
+        name = name.replace(/ cloves?$/, '').trim();
+        unit = 'clove';
+      }
+
+      // Strip piece/knob size descriptors (e.g. "thumb-sized piece ginger", "inch piece fresh ginger")
+      // and null out qty — a knob of ginger isn't a useful shopping quantity
+      const pieceRe = /^(?:(?:\d+(?:\.\d+)?\s*-?\s*)?(?:inch|cm)\s+)?(?:thumb-?sized?\s+)?(?:piece|knob|chunk)s?\s+(?:of\s+)?(?:fresh\s+)?/i;
+      if (pieceRe.test(name)) {
+        name = name.replace(pieceRe, '').trim();
+        qty = null;
+        unit = null;
+      }
+
+      // Apply synonyms
+      name = SYNONYMS[name] || name;
+
+      // Strip any remaining trailing punctuation/whitespace
+      name = name.replace(/[,.]$/, '').trim();
+
+      return { qty, unit, name };
+    }
+
+    function isPantry(unit, name) {
+      if (unit === 'tbsp' || unit === 'tsp' || unit === 'can') return true;
+      return PANTRY_KEYWORDS.some(k => name.includes(k));
+    }
+
+    // ── AGGREGATION ───────────────────────────────────────────────────────────
+
+    function buildShoppingList(recipes) {
+      const freshMap = new Map();   // key: `${name}::${unit}` → {name, unit, qty, recipes: Set}
+      const pantryMap = new Map();  // name → Set<title>
+
+      recipes.forEach(recipe => {
+        recipe.ingredients.forEach(group => {
+          group.items.forEach(raw => {
+            const { qty, unit, name } = parseIngredient(raw);
+            if (!name) return;
+
+            if (isPantry(unit, name)) {
+              if (!pantryMap.has(name)) pantryMap.set(name, new Set());
+              pantryMap.get(name).add(recipe.title);
+            } else {
+              const key = `${name}::${unit || 'none'}`;
+              if (freshMap.has(key)) {
+                const entry = freshMap.get(key);
+                if (entry.qty !== null && qty !== null) entry.qty += qty;
+                entry.recipes.add(recipe.title);
+              } else {
+                freshMap.set(key, { name, unit, qty: qty !== null ? qty : null, recipes: new Set([recipe.title]) });
+              }
+            }
+          });
+        });
+      });
+
+      // Convert metric units after aggregation, then separate qty vs no-qty buckets
+      const withQty = [];
+      const noQtyMap = new Map();  // name → Set<title>
+
+      freshMap.forEach(entry => {
+        let { name, unit, qty, recipes } = entry;
+        if (qty !== null && (unit === 'g' || unit === 'kg')) {
+          ({ qty, unit } = toUSUnits(qty, unit));
+        }
+        if (qty === null) {
+          if (!noQtyMap.has(name)) noQtyMap.set(name, new Set());
+          recipes.forEach(r => noQtyMap.get(name).add(r));
+        } else {
+          withQty.push({ name, unit, qty, recipes });
+        }
+      });
+
+      // Only show no-qty names that aren't already covered by a qty entry
+      const withQtyNames = new Set(withQty.map(i => i.name));
+      const noQty = [];
+      noQtyMap.forEach((recipeSet, name) => {
+        if (!withQtyNames.has(name)) noQty.push({ name, unit: null, qty: null, recipes: recipeSet });
+      });
+
+      const fresh = [...withQty, ...noQty].sort((a, b) => a.name.localeCompare(b.name));
+      const pantry = Array.from(pantryMap.entries())
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([name, recipeSet]) => ({ name, recipes: recipeSet }));
+      return { fresh, pantry };
+    }
+
+    // ── NUMBER FORMATTING ─────────────────────────────────────────────────────
+
+    function fmtFrac(f) {
+      const pairs = [[0.125,'⅛'],[0.25,'¼'],[0.333,'⅓'],[0.375,'⅜'],[0.5,'½'],[0.625,'⅝'],[0.667,'⅔'],[0.75,'¾'],[0.875,'⅞']];
+      for (const [val, sym] of pairs) if (Math.abs(f - val) < 0.02) return sym;
+      return null;
+    }
+
+    function fmtNum(n) {
+      if (n === null) return '';
+      const whole = Math.floor(n);
+      const frac = Math.round((n - whole) * 1000) / 1000;
+      if (frac === 0) return String(whole);
+      const fracStr = fmtFrac(frac);
+      if (whole === 0) return fracStr || n.toFixed(2);
+      return whole + (fracStr || ('.' + Math.round(frac * 100)));
+    }
+
+    function toUSUnits(qty, unit) {
+      if (unit === 'g') {
+        if (qty < 100) return { qty: null, unit: null };
+        if (qty < 450) {
+          const oz = Math.round(qty * 0.035274 * 2) / 2;
+          return { qty: oz, unit: 'oz' };
+        }
+        const lb = Math.round(qty * 0.0022046 * 4) / 4;
+        return { qty: lb, unit: 'lb' };
+      }
+      if (unit === 'kg') {
+        const lb = Math.round(qty * 2.20462 * 4) / 4;
+        return { qty: lb, unit: 'lb' };
+      }
+      return { qty, unit };
+    }
+
+    function formatFreshItem(item) {
+      const { name, unit, qty, recipes } = item;
+      const cap = name.charAt(0).toUpperCase() + name.slice(1);
+      let text;
+      if (qty === null || unit === null) text = cap;
+      else if (unit === 'count') text = `${fmtNum(qty)} ${name}`;
+      else if (unit === 'clove') text = `${fmtNum(qty)} ${qty === 1 ? 'clove' : 'cloves'} ${name}`;
+      else text = `${fmtNum(qty)} ${unit} ${name}`;
+      if (recipes && recipes.size > 0) {
+        text += `<span class="item-source">(${Array.from(recipes).join(' · ')})</span>`;
+      }
+      return text;
+    }
+
+    // ── RENDER ────────────────────────────────────────────────────────────────
+
+    function render() {
+      const params = new URLSearchParams(location.search);
+      const ids = (params.get('ids') || '').split(',').filter(Boolean);
+
+      if (ids.length === 0) {
+        document.getElementById('mp-content').innerHTML = '<div class="mp-empty">No recipes selected.</div>';
+        document.getElementById('mp-subtitle').textContent = '';
+        return;
+      }
+
+      const selected = ids.map(id => recipeData.find(r => r.id === id)).filter(Boolean);
+
+      if (selected.length === 0) {
+        document.getElementById('mp-content').innerHTML = '<div class="mp-empty">Recipes not found.</div>';
+        return;
+      }
+
+      document.title = 'Shopping List — Verified Recipes';
+      document.getElementById('mp-subtitle').textContent =
+        `${selected.length} ${selected.length === 1 ? 'recipe' : 'recipes'} selected`;
+      document.getElementById('mp-recipe-names').textContent =
+        selected.map(r => r.title).join(' · ');
+
+      const { fresh, pantry } = buildShoppingList(selected);
+      const totalCount = fresh.length + pantry.length;
+
+      let html = '';
+
+      if (fresh.length > 0) {
+        html += `<div class="mp-section">
+          <p class="mp-section-title">Fresh &amp; Produce</p>
+          <ul class="mp-list">`;
+        fresh.forEach(item => {
+          html += `<li>${formatFreshItem(item)}</li>`;
+        });
+        html += `</ul></div>`;
+      }
+
+      if (pantry.length > 0) {
+        html += `<div class="mp-section">
+          <p class="mp-section-title">Pantry, Sauces &amp; Spices</p>
+          <ul class="mp-list">`;
+        pantry.forEach(({ name, recipes }) => {
+          const cap = name.charAt(0).toUpperCase() + name.slice(1);
+          const src = recipes && recipes.size > 0
+            ? `<span class="item-source">(${Array.from(recipes).join(' · ')})</span>`
+            : '';
+          html += `<li>${cap}${src}</li>`;
+        });
+        html += `</ul></div>`;
+      }
+
+      if (totalCount === 0) {
+        html = '<div class="mp-empty">No ingredients found.</div>';
+      }
+
+      document.getElementById('mp-content').innerHTML = html;
+
+      const storageKey = 'mp-checked::' + (params.get('ids') || '');
+      const saved = new Set(JSON.parse(localStorage.getItem(storageKey) || '[]'));
+
+      document.querySelectorAll('.mp-list li').forEach((li, i) => {
+        if (saved.has(i)) li.classList.add('checked');
+        li.addEventListener('click', () => {
+          li.classList.toggle('checked');
+          const checked = Array.from(document.querySelectorAll('.mp-list li'))
+            .map((el, idx) => el.classList.contains('checked') ? idx : -1)
+            .filter(idx => idx !== -1);
+          localStorage.setItem(storageKey, JSON.stringify(checked));
+        });
+      });
+    }
+
+    render();
+  </script>
+
+</body>
+</html>
