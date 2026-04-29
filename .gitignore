@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Claude Code internals
+.claude/
+.mcp.json
+
+# Mockups / prototypes
+mockups/
+mockup.html
+
+# Source documents & screenshots
+Recipes_updated.docx
+recipe_website.png
+screenshot.png
+download-images.js
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Misc images used during setup
+recipe_images/image2.png
+recipe_images/image2_original.png
+recipe_images/image3.png
+recipe_images/image4.png
+recipe_images/image4_original.png

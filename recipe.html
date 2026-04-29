@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipe — Verified Recipes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+
+    /* RECIPE DETAIL */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #aaa;
+      text-decoration: none;
+      margin-bottom: 28px;
+    }
+    .back-link:hover { color: #1a1a1a; }
+
+    .recipe-hero-img {
+      margin-bottom: 32px;
+    }
+    .recipe-hero-img img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .recipe-cuisine {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+    .recipe-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1.25;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+    }
+    .recipe-meta {
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 28px;
+    }
+    .recipe-divider {
+      border: none;
+      border-top: 1px solid #ebebeb;
+      margin-bottom: 36px;
+    }
+    .recipe-body {
+      display: grid;
+      grid-template-columns: 1fr 1.7fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .recipe-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 16px;
+    }
+    .ingredient-group-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 16px 0 8px;
+    }
+    .ingredient-item {
+      font-size: 13px;
+      color: #444;
+      padding: 7px 0;
+      border-bottom: 1px solid #f0f0f0;
+      line-height: 1.5;
+    }
+    .step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .step-num {
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      background: #1a1a1a;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-text {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.75;
+    }
+
+    #not-found {
+      text-align: center;
+      padding: 80px 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: #ccc;
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 64px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      #recipe-content { padding: 28px 20px 48px !important; }
+
+      .recipe-hero-img img { height: 220px; }
+      .recipe-title { font-size: 22px; }
+      .recipe-body {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      footer { padding: 24px 20px; margin-top: 40px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Verified Recipes</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="Recipes.html" class="active">Recipes</a></li>
+    </ul>
+    <div class="nav-search-pill">
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#aaa" stroke-width="2" style="flex-shrink:0">
+        <circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/>
+      </svg>
+      <input type="text" placeholder="Search recipes…" onkeydown="if(event.key==='Enter'&&this.value.trim())window.location='Recipes.html?search='+encodeURIComponent(this.value.trim())" />
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <div id="recipe-content" style="max-width: 860px; margin: 0 auto; padding: 40px 48px 60px;">
+    <div id="not-found" style="display:none;">Recipe not found. <a href="Recipes.html"
+        style="color:#555; text-decoration: underline;">Back to recipes</a></div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <a href="index.html" class="footer-logo">Verified Recipes</a>
+    <span class="footer-note">Home-tested. Every time.</span>
+  </footer>
+
+  <script src="recipes-data.js"></script>
+  <script>
+    const hiddenTags = new Set(['Easy', 'Weeknight', 'Comfort Food']);
+
+    function render() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      const recipe = window.RECIPES.find(r => r.id === id);
+      const container = document.getElementById('recipe-content');
+
+      if (!recipe) {
+        document.getElementById('not-found').style.display = 'block';
+        document.title = 'Recipe Not Found — Verified Recipes';
+        return;
+      }
+
+      document.title = recipe.title + ' — Verified Recipes';
+
+      let html = '';
+
+      // Back link
+      html += `<a href="Recipes.html" class="back-link">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        All Recipes
+      </a>`;
+
+      // Hero image
+      if (recipe.image) {
+        const posStyle = recipe.imagePosition ? ` style="object-position:${recipe.imagePosition}"` : '';
+        html += `<div class="recipe-hero-img"><img src="${recipe.image}" alt="${recipe.title}"${posStyle} /></div>`;
+      }
+
+      // Cuisine + title + meta (strip display-only tags)
+      const cuisineTags = recipe.tags.filter(t => !hiddenTags.has(t));
+      html += `<p class="recipe-cuisine">${cuisineTags.join(' &nbsp;·&nbsp; ')}</p>`;
+      html += `<h1 class="recipe-title">${recipe.title}</h1>`;
+      html += `<p class="recipe-meta">Serves ${recipe.serves}${recipe.calories ? ' &nbsp;·&nbsp; Est. ' + recipe.calories : ''}</p>`;
+
+      // Divider
+      html += `<hr class="recipe-divider" />`;
+
+      // Two-column layout
+      html += `<div class="recipe-body">`;
+
+      // Ingredients
+      html += `<div><p class="recipe-section-label">Ingredients</p>`;
+      recipe.ingredients.forEach(group => {
+        if (group.group) html += `<p class="ingredient-group-title">${group.group}</p>`;
+        group.items.forEach(item => {
+          html += `<div class="ingredient-item">${item}</div>`;
+        });
+      });
+      html += `</div>`;
+
+      // Instructions
+      html += `<div><p class="recipe-section-label">Instructions</p>`;
+      recipe.steps.forEach((step, i) => {
+        html += `<div class="step"><div class="step-num">${i + 1}</div><div class="step-text">${step}</div></div>`;
+      });
+      html += `</div>`;
+
+      html += `</div>`;
+      container.innerHTML = html;
+    }
+
+    render();
+  </script>
+</body>
+
+</html>

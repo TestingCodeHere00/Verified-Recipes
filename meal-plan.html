@@ -1,0 +1,514 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping List — Verified Recipes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+
+    /* PAGE HEADER */
+    .mp-header {
+      padding: 40px 48px 32px;
+      border-bottom: 1px solid #ebebeb;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .mp-header-left { flex: 1; }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #aaa;
+      text-decoration: none;
+      margin-bottom: 16px;
+    }
+    .back-link:hover { color: #1a1a1a; }
+    .mp-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .mp-subtitle {
+      font-size: 13px;
+      color: #888;
+    }
+    .mp-recipe-names {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 6px;
+    }
+    .print-btn {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      margin-top: 4px;
+    }
+    .print-btn:hover { background: #333; }
+
+    /* SHOPPING LIST */
+    .mp-content {
+      padding: 40px 48px 80px;
+      max-width: 760px;
+    }
+    .mp-section {
+      margin-bottom: 40px;
+    }
+    .mp-section-title {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ebebeb;
+    }
+    .mp-list {
+      list-style: none;
+    }
+    .mp-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid #f5f5f5;
+      font-size: 14px;
+      color: #1a1a1a;
+    }
+    .mp-list li {
+      cursor: pointer;
+      user-select: none;
+    }
+    .mp-list li::before {
+      content: '';
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #ddd;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .mp-list li.checked::before {
+      background: #1a1a1a;
+      border-color: #1a1a1a;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%23fff' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: 11px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .mp-list li.checked {
+      color: #bbb;
+      text-decoration: line-through;
+      text-decoration-color: #ccc;
+    }
+    .mp-list li.checked .item-source {
+      color: #ccc;
+    }
+    .mp-empty {
+      padding: 80px 48px;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: #ccc;
+    }
+    .item-source {
+      font-size: 11px;
+      color: #aaa;
+      margin-left: 6px;
+      font-style: italic;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .mp-header { padding: 28px 20px 24px; flex-direction: column; }
+      .print-btn { align-self: flex-start; }
+      .mp-content { padding: 28px 20px 60px; }
+      footer { padding: 24px 20px; }
+    }
+
+    /* PRINT */
+    @media print {
+      nav, footer, .back-link, .print-btn { display: none !important; }
+      .mp-header { border-bottom: 1px solid #ccc; padding: 20px 0; }
+      .mp-content { padding: 24px 0; }
+      .mp-list li { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Verified Recipes</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="Recipes.html">Recipes</a></li>
+    </ul>
+  </nav>
+
+  <!-- HEADER -->
+  <div class="mp-header">
+    <div class="mp-header-left">
+      <a href="Recipes.html" class="back-link">← All Recipes</a>
+      <h1 class="mp-title">Shopping List</h1>
+      <p class="mp-subtitle" id="mp-subtitle"></p>
+      <p class="mp-recipe-names" id="mp-recipe-names"></p>
+    </div>
+    <button class="print-btn" onclick="window.print()">Print</button>
+  </div>
+
+  <!-- LIST -->
+  <div class="mp-content" id="mp-content"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="index.html" class="footer-logo">Verified Recipes</a>
+    <span class="footer-note">Home-tested. Every time.</span>
+  </footer>
+
+  <script src="recipes-data.js"></script>
+  <script>
+    // ── INGREDIENT PARSING ────────────────────────────────────────────────────
+
+    const UNICODE_FRACTIONS = { '¼':0.25,'½':0.5,'¾':0.75,'⅓':0.3333,'⅔':0.6667,'⅛':0.125,'⅜':0.375,'⅝':0.625,'⅞':0.875 };
+
+    const UNIT_MAP = {
+      'tablespoons':'tbsp','tablespoon':'tbsp','tbsps':'tbsp','tbsp':'tbsp',
+      'teaspoons':'tsp','teaspoon':'tsp','tsps':'tsp','tsp':'tsp',
+      'cups':'cup','cup':'cup',
+      'grams':'g','gram':'g','g':'g',
+      'kilograms':'kg','kilogram':'kg','kg':'kg',
+      'pounds':'lb','pound':'lb','lbs':'lb','lb':'lb',
+      'ounces':'oz','ounce':'oz','oz':'oz',
+      'milliliters':'ml','milliliter':'ml','ml':'ml',
+      'cloves':'clove','clove':'clove',
+      'pieces':'count','piece':'count',
+      'pinches':'tsp','pinch':'tsp',
+      'dashes':'tsp','dash':'tsp',
+      'handfuls':'count','handful':'count',
+      'stalks':'count','stalk':'count',
+      'blocks':'count','block':'count',
+      'cans':'can','can':'can',
+      'jars':'can','jar':'can',
+      'packets':'can','packet':'can',
+      'slices':'count','slice':'count',
+    };
+
+    const CATEGORY_ORDER = [
+      'Meat & Protein', 'Produce', 'Dairy & Eggs',
+      'Bread & Dry Goods', 'Sauces, Oils & Condiments', 'Spices & Seasonings'
+    ];
+    const NO_QTY_CATEGORIES = new Set(['Spices & Seasonings', 'Sauces, Oils & Condiments']);
+
+    const SAUCE_KEYWORDS  = ['stock','broth','bouillon','sauce','paste','oil','vinegar','wine','mirin','sake','ketchup','mayo','mayonnaise','mustard','pesto','marinara','coconut','spray','condensed','doubanjiang','worcestershire','water'];
+    const MEAT_KEYWORDS   = ['chicken','pork','beef','fish','tofu','shrimp','sausage','steak','ribeye','mortadella','turkey','lamb','salmon','cod','tilapia','bass'];
+    const PRODUCE_KEYWORDS= ['garlic','ginger','onion','shallot','scallion','carrot','cucumber','eggplant','potato','tomato','cabbage','spinach','green bean','snow pea','mushroom','jalapeño','jalapeno','lemon','lime','lemongrass','kaffir','cilantro','parsley','mint','basil','dill','leek','zucchini','broccoli','celery','corn','bell pepper','thai basil','chili'];
+    const DAIRY_KEYWORDS  = ['egg','butter','cream','yogurt','cheese','milk','ghee','labneh'];
+    const BREAD_KEYWORDS  = ['rice','pasta','noodle','bread','bun','flour','panko','breadcrumb','gnocchi','pita','roll','tortilla'];
+    const SPICE_KEYWORDS  = ['salt','sugar','pepper','powder','seasoning','paprika','cumin','coriander','cinnamon','garam','cayenne','oregano','fennel','cornstarch','starch','honey','molasses','syrup','peppercorn','thyme','rosemary','five spice'];
+
+    function getCategory(name, unit) {
+      const has = (list) => list.some(k => name.includes(k));
+      if (has(SAUCE_KEYWORDS))   return 'Sauces, Oils & Condiments';
+      if (has(MEAT_KEYWORDS))    return 'Meat & Protein';
+      if (has(PRODUCE_KEYWORDS)) return 'Produce';
+      if (has(DAIRY_KEYWORDS))   return 'Dairy & Eggs';
+      if (has(BREAD_KEYWORDS))   return 'Bread & Dry Goods';
+      if (has(SPICE_KEYWORDS))   return 'Spices & Seasonings';
+      if (unit === 'tbsp' || unit === 'tsp') return 'Spices & Seasonings';
+      if (unit === 'can'  || unit === 'ml')  return 'Sauces, Oils & Condiments';
+      return 'Produce';
+    }
+
+    const SYNONYMS = {
+      'spring onions': 'scallions',
+      'spring onion': 'scallions',
+      'green onions': 'scallions',
+      'green onion': 'scallions',
+      'fresh ginger': 'ginger',
+      'fresh cilantro': 'cilantro',
+      'freshly squeezed lime juice': 'lime juice',
+      'fresh lemon juice': 'lemon juice',
+      'fresh parsley': 'parsley',
+      'fresh mint': 'mint',
+      'fresh basil': 'basil',
+    };
+
+    const PREP_RE = /,\s*(?:finely|roughly|thinly|lightly|freshly|coarsely|gently|briefly|about|chopped|minced|diced|sliced|grated|julienned|beaten|peeled|trimmed|shredded|crumbled|soaked|drained|rehydrated|halved|quartered|smashed|mashed|crushed|pressed|toasted|roasted|softened|melted|mixed|whisked|divided|rinsed|squeezed|deboned|deveined|patted|or to taste|if desired|if using|plus|room temp|for garnish|store-bought|at room temp|lightly smashed|seeded).*/i;
+
+    const LEADING_PREP_RE = /^(sliced|steamed|drained|chopped|minced|diced|grated|julienned|shredded|crushed|fresh|dried|canned|cooked|toasted|roasted|quick-pickled|thinly sliced|finely chopped|freshly ground)\s+/i;
+
+    function normalizeFractions(s) {
+      // Insert space between digit and fraction char so "1½" → "1 ½" before replacement
+      s = s.replace(/(\d)([¼½¾⅓⅔⅛⅜⅝⅞])/g, '$1 $2');
+      // Replace unicode fraction chars
+      s = s.replace(/[¼½¾⅓⅔⅛⅜⅝⅞]/g, m => UNICODE_FRACTIONS[m]);
+      // Combine mixed numbers: "1 0.5" → 1.5
+      s = s.replace(/(\d+)\s+(0\.\d+)/g, (_, a, b) => String(parseFloat(a) + parseFloat(b)));
+      // Ranges: "3–4" or "3-4" → keep lower
+      s = s.replace(/(\d+(?:\.\d+)?)\s*[–\-]\s*\d+(?:\.\d+)?(?!\s*(?:inch|cm|mm))/g, '$1');
+      return s;
+    }
+
+    function parseIngredient(raw) {
+      let s = normalizeFractions(raw);
+      // Strip parentheticals
+      s = s.replace(/\(.*?\)/g, '').replace(/\s+/g, ' ').trim();
+      // Strip trailing qualifiers
+      s = s.replace(/,?\s*(to taste|for serving|for garnish|optional|as needed|if desired|if using|adjust to taste)\s*$/i, '').trim();
+
+      // Extract leading number
+      const numMatch = s.match(/^(\d+(?:\.\d+)?)\s*/);
+      let qty = null;
+      if (numMatch) {
+        qty = parseFloat(numMatch[1]);
+        s = s.slice(numMatch[0].length);
+      }
+
+      // Extract unit
+      let unit = null;
+      const unitMatch = s.match(/^([a-zA-Z]+)\s+/);
+      if (unitMatch) {
+        const cand = unitMatch[1].toLowerCase();
+        if (UNIT_MAP[cand] !== undefined) {
+          unit = UNIT_MAP[cand];
+          s = s.slice(unitMatch[0].length);
+        }
+      }
+      if (qty !== null && unit === null) unit = 'count';
+
+      // Extract name: strip prep notes after comma, strip leading prep words
+      let name = s.replace(PREP_RE, '').trim().toLowerCase();
+      name = name.replace(LEADING_PREP_RE, '');
+
+      // Handle "garlic cloves" → unit=clove
+      if (name.endsWith(' cloves') || name.endsWith(' clove')) {
+        name = name.replace(/ cloves?$/, '').trim();
+        unit = 'clove';
+      }
+
+      // Strip piece/knob size descriptors (e.g. "thumb-sized piece ginger", "inch piece fresh ginger")
+      // and null out qty — a knob of ginger isn't a useful shopping quantity
+      const pieceRe = /^(?:(?:\d+(?:\.\d+)?\s*-?\s*)?(?:inch|cm)\s+)?(?:thumb-?sized?\s+)?(?:piece|knob|chunk)s?\s+(?:of\s+)?(?:fresh\s+)?/i;
+      if (pieceRe.test(name)) {
+        name = name.replace(pieceRe, '').trim();
+        qty = null;
+        unit = null;
+      }
+
+      // Apply synonyms
+      name = SYNONYMS[name] || name;
+
+      // Strip any remaining trailing punctuation/whitespace
+      name = name.replace(/[,.]$/, '').trim();
+
+      return { qty, unit, name };
+    }
+
+    // ── AGGREGATION ───────────────────────────────────────────────────────────
+
+    function buildShoppingList(recipes) {
+      const allMap = new Map(); // key → { name, unit, qty, recipes: Set, category }
+
+      recipes.forEach(recipe => {
+        recipe.ingredients.forEach(group => {
+          group.items.forEach(raw => {
+            const { qty, unit, name } = parseIngredient(raw);
+            if (!name) return;
+
+            const category = getCategory(name, unit);
+            const keepQty = !NO_QTY_CATEGORIES.has(category) && qty !== null;
+            const key = keepQty ? `${name}::${unit || 'none'}` : `${name}::noqty`;
+
+            if (allMap.has(key)) {
+              const entry = allMap.get(key);
+              if (entry.qty !== null && keepQty && qty !== null) entry.qty += qty;
+              entry.recipes.add(recipe.title);
+            } else {
+              allMap.set(key, { name, unit, qty: keepQty ? qty : null, recipes: new Set([recipe.title]), category });
+            }
+          });
+        });
+      });
+
+      // Convert units after aggregation
+      allMap.forEach(entry => {
+        if (entry.qty !== null && (entry.unit === 'g' || entry.unit === 'kg' || entry.unit === 'tsp' || entry.unit === 'tbsp')) {
+          const converted = toUSUnits(entry.qty, entry.unit);
+          entry.qty = converted.qty;
+          entry.unit = converted.unit;
+        }
+      });
+
+      // Deduplicate: if a name has both a qty and a no-qty entry, drop the no-qty one
+      const withQtyNames = new Set();
+      allMap.forEach(entry => { if (entry.qty !== null) withQtyNames.add(entry.name); });
+
+      // Group by category
+      const grouped = new Map(CATEGORY_ORDER.map(label => [label, []]));
+      allMap.forEach(entry => {
+        if (entry.qty === null && withQtyNames.has(entry.name)) return;
+        grouped.get(entry.category)?.push(entry);
+      });
+
+      const categories = CATEGORY_ORDER
+        .map(label => ({ label, items: (grouped.get(label) || []).sort((a, b) => a.name.localeCompare(b.name)) }))
+        .filter(cat => cat.items.length > 0);
+
+      return { categories };
+    }
+
+    // ── NUMBER FORMATTING ─────────────────────────────────────────────────────
+
+    function fmtFrac(f) {
+      const pairs = [[0.125,'⅛'],[0.25,'¼'],[0.333,'⅓'],[0.375,'⅜'],[0.5,'½'],[0.625,'⅝'],[0.667,'⅔'],[0.75,'¾'],[0.875,'⅞']];
+      for (const [val, sym] of pairs) if (Math.abs(f - val) < 0.02) return sym;
+      return null;
+    }
+
+    function fmtNum(n) {
+      if (n === null) return '';
+      const whole = Math.floor(n);
+      const frac = Math.round((n - whole) * 1000) / 1000;
+      if (frac === 0) return String(whole);
+      const fracStr = fmtFrac(frac);
+      if (whole === 0) return fracStr || n.toFixed(2);
+      return whole + (fracStr || ('.' + Math.round(frac * 100)));
+    }
+
+    function toUSUnits(qty, unit) {
+      if (unit === 'tsp' && qty > 5) {
+        const tbsp = Math.round((qty / 3) * 8) / 8;
+        if (tbsp > 5) {
+          const cup = Math.round((tbsp / 16) * 8) / 8;
+          return { qty: cup, unit: 'cup' };
+        }
+        return { qty: tbsp, unit: 'tbsp' };
+      }
+      if (unit === 'tbsp' && qty > 5) {
+        const cup = Math.round((qty / 16) * 8) / 8;
+        return { qty: cup, unit: 'cup' };
+      }
+      if (unit === 'g') {
+        if (qty < 100) return { qty: null, unit: null };
+        if (qty < 450) {
+          const oz = Math.round(qty * 0.035274 * 2) / 2;
+          return { qty: oz, unit: 'oz' };
+        }
+        const lb = Math.round(qty * 0.0022046 * 4) / 4;
+        return { qty: lb, unit: 'lb' };
+      }
+      if (unit === 'kg') {
+        const lb = Math.round(qty * 2.20462 * 4) / 4;
+        return { qty: lb, unit: 'lb' };
+      }
+      return { qty, unit };
+    }
+
+    function formatFreshItem(item) {
+      const { name, unit, qty, recipes } = item;
+      const cap = name.charAt(0).toUpperCase() + name.slice(1);
+      let text;
+      if (qty === null || unit === null) text = cap;
+      else if (unit === 'count') text = `${fmtNum(qty)} ${name}`;
+      else if (unit === 'clove') text = `${fmtNum(qty)} ${qty === 1 ? 'clove' : 'cloves'} ${name}`;
+      else text = `${fmtNum(qty)} ${unit} ${name}`;
+      if (recipes && recipes.size > 0) {
+        text += `<span class="item-source">(${Array.from(recipes).join(' · ')})</span>`;
+      }
+      return text;
+    }
+
+    // ── RENDER ────────────────────────────────────────────────────────────────
+
+    const params = new URLSearchParams(location.search);
+    const storageKey = 'mp-checked::' + (params.get('ids') || '');
+    let checkedItems = new Set(JSON.parse(localStorage.getItem(storageKey) || '[]'));
+
+    // Single delegated click listener on #mp-content (Issue 5 & 6)
+    document.getElementById('mp-content').addEventListener('click', function(e) {
+      const li = e.target.closest('li');
+      if (!li) return;
+      const index = parseInt(li.dataset.index, 10);
+      if (isNaN(index)) return;
+      if (checkedItems.has(index)) {
+        checkedItems.delete(index);
+        li.classList.remove('checked');
+      } else {
+        checkedItems.add(index);
+        li.classList.add('checked');
+      }
+      localStorage.setItem(storageKey, JSON.stringify([...checkedItems]));
+    });
+
+    function render() {
+      const ids = (params.get('ids') || '').split(',').filter(Boolean);
+
+      if (ids.length === 0) {
+        document.getElementById('mp-content').innerHTML = '<div class="mp-empty">No recipes selected.</div>';
+        document.getElementById('mp-subtitle').textContent = '';
+        return;
+      }
+
+      const selected = ids.map(id => window.RECIPES.find(r => r.id === id)).filter(Boolean);
+
+      if (selected.length === 0) {
+        document.getElementById('mp-content').innerHTML = '<div class="mp-empty">Recipes not found.</div>';
+        return;
+      }
+
+      document.title = 'Shopping List — Verified Recipes';
+      document.getElementById('mp-subtitle').textContent =
+        `${selected.length} ${selected.length === 1 ? 'recipe' : 'recipes'} selected`;
+      document.getElementById('mp-recipe-names').textContent =
+        selected.map(r => r.title).join(' · ');
+
+      const { categories } = buildShoppingList(selected);
+      const totalCount = categories.reduce((sum, c) => sum + c.items.length, 0);
+
+      let html = '';
+      let itemIndex = 0;
+
+      categories.forEach(({ label, items }) => {
+        html += `<div class="mp-section">
+          <p class="mp-section-title">${label}</p>
+          <ul class="mp-list">`;
+        items.forEach(item => {
+          const cls = checkedItems.has(itemIndex) ? ' class="checked"' : '';
+          html += `<li${cls} data-index="${itemIndex}">${formatFreshItem(item)}</li>`;
+          itemIndex++;
+        });
+        html += `</ul></div>`;
+      });
+
+      if (totalCount === 0) {
+        html = '<div class="mp-empty">No ingredients found.</div>';
+      }
+
+      document.getElementById('mp-content').innerHTML = html;
+    }
+
+    render();
+  </script>
+
+</body>
+</html>
