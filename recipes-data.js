@@ -170,7 +170,7 @@ window.RECIPES = [
   {
     id: 'butter-chicken',
     title: 'Butter Chicken (Slow Cooker / Instant Pot)',
-    image: 'recipe_images/butter-chicken.jpg',
+    image: 'recipe_images/Butter_Chicken.jpeg',
     tags: ['Indian', 'Chicken', 'Comfort Food'],
     serves: '4–6',
     calories: '~480 calories per serving',
@@ -566,5 +566,29 @@ window.RECIPES = [
       'Slowly stir in the cornstarch slurry until the sauce thickens to your liking. Taste and adjust seasoning.',
       'Garnish with sliced spring onions and serve hot with steamed rice.'
     ]
+  },
+  {
+    id: 'nikujaga-stew',
+    title: 'Nikujaga-Style Chicken & Potato Stew',
+    image: 'recipe_images/Nikujaga_Stew.jpg',
+    tags: ['Japanese', 'Chicken', 'Soup', 'Comfort Food', 'One Pot'],
+    serves: '4',
+    calories: '~380 calories per serving',
+    description: "Japan's beloved meat-and-potato comfort stew, made lighter with chicken instead of beef. A clean, one-pot simmer in dashi, soy, and mirin that's deeply warming and naturally filling.",
+    ingredients: [
+      { group: 'Protein & Vegetables', items: ['500 grams boneless skinless chicken thighs, sliced into bite-sized pieces', '600 grams Yukon gold potatoes, cut into 1.5-inch chunks', '1 medium yellow onion, sliced into half-moons', '2 medium carrots, sliced on the diagonal'] },
+      { group: 'Broth & Seasoning', items: ['2.5 cups dashi stock (or 2 tsp dashi powder dissolved in water)', '3 tablespoons soy sauce', '3 tablespoons mirin', '2 tablespoons sake (or dry sherry)', '1 teaspoon sugar', '1 tablespoon neutral oil'] },
+      { group: 'Finish & Garnish', items: ['½ cup frozen peas', '3 scallions, thinly sliced'] }
+    ],
+    steps: [
+      'Prep all vegetables: cut potatoes into 1.5-inch chunks and soak in cold water for 5 minutes to remove excess starch — this helps them hold their shape during simmering. Drain and pat dry. Slice onion into half-moons and carrots on the diagonal into 1-inch pieces.',
+      'Heat 1 tablespoon neutral oil in a medium pot or Dutch oven over medium-high heat. Add onion and cook for 2 minutes until slightly softened. Add chicken and stir-fry for 3–4 minutes until lightly browned on the outside but not fully cooked through.',
+      'Add potatoes and carrots to the pot. Pour in dashi stock, then add soy sauce, mirin, sake, and sugar. Stir gently to combine. The liquid should just barely cover the ingredients — add a splash more dashi if needed.',
+      'Bring to a boil over medium-high heat. As it comes to a boil, skim off any foam that rises to the surface with a spoon — this keeps the broth clean and clear. Once skimmed, reduce heat to low.',
+      'Place a drop lid (otoshibuta) directly on the ingredients if you have one — a sheet of foil with a few holes poked in it works perfectly. Simmer on low for 20–25 minutes until the potatoes are completely tender and the carrots are soft.',
+      'Remove the lid and stir in frozen peas. Turn off the heat and let the stew rest uncovered for 5 minutes — this lets the ingredients absorb the broth more deeply as it cools slightly.',
+      'Ladle into bowls and garnish generously with sliced scallions. Serve as-is for a low-carb meal, or with a small bowl of steamed rice on the side.'
+    ],
+    notes: 'Using boneless skinless chicken thighs instead of the traditional beef keeps this lean while maintaining rich flavor. The potatoes and carrots are high in fiber and very satiating — this stew is filling enough that you won\'t need much rice alongside. Nikujaga actually tastes better the next day as the flavors meld overnight, making it great for meal prep. If you can\'t find dashi stock, low-sodium chicken broth works as a substitute, though the flavor will be slightly less delicate.'
   }
 ];
