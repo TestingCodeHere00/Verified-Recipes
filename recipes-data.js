@@ -46,7 +46,7 @@ window.RECIPES = [
   {
     id: 'steamed-chicken-shiitake',
     title: 'Steamed Chicken with Shiitake Mushrooms',
-    image: 'recipe_images/image3.png',
+    image: 'recipe_images/Steamed_Chicken_Shiitake.jpeg',
     tags: ['Chinese', 'Chicken', 'Marinade'],
     serves: '3–4',
     calories: '~320 calories per serving',
