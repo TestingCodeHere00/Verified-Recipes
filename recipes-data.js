@@ -46,7 +46,7 @@ window.RECIPES = [
   {
     id: 'steamed-chicken-shiitake',
     title: 'Steamed Chicken with Shiitake Mushrooms',
-    image: 'recipe_images/Steamed_Chicken_Shiitake.jpeg',
+    image: 'recipe_images/Shiitake.jpeg',
     tags: ['Chinese', 'Chicken', 'Marinade'],
     serves: '3–4',
     calories: '~320 calories per serving',
@@ -67,7 +67,7 @@ window.RECIPES = [
   {
     id: 'jjimdak',
     title: 'Jjimdak / Korean Braised Chicken',
-    image: 'recipe_images/image4.png',
+    image: 'recipe_images/Jjimdak.jpeg',
     tags: ['Korean', 'Chicken', 'Comfort Food'],
     serves: '4',
     calories: '~480 calories per serving',
@@ -86,7 +86,7 @@ window.RECIPES = [
   {
     id: 'beef-kebabs',
     title: 'Beef Kebabs (Oven Baked) with Pita Build',
-    image: 'recipe_images/beef-kebabs.jpg',
+    image: 'recipe_images/Beef_kebab.jpeg',
     tags: ['Middle Eastern', 'Beef'],
     serves: '4',
     calories: '~550 calories per serving',
@@ -147,7 +147,7 @@ window.RECIPES = [
   {
     id: 'chicken-katsu',
     title: 'Chicken Katsu (Air Fryer Style)',
-    image: 'recipe_images/chicken-katsu.jpg',
+    image: 'recipe_images/Katsu.jpeg',
     tags: ['Japanese', 'Chicken', 'Easy', 'Weeknight'],
     serves: '2',
     calories: '~573 calories per serving',
@@ -412,7 +412,7 @@ window.RECIPES = [
   {
     id: 'omelette-sandwich',
     title: '3 Ingredient Omelette Sandwich',
-    image: 'recipe_images/omelette-sandwich.jpg',
+    image: 'recipe_images/Omlette.jpeg',
     tags: ['Middle Eastern', 'Easy', 'Lunch'],
     serves: '1',
     calories: '~320 calories per serving',
