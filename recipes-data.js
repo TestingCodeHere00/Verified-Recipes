@@ -107,7 +107,7 @@ window.RECIPES = [
   {
     id: 'sheet-pan-gnocchi',
     title: 'Sheet Pan Gnocchi with Sausage & Vegetables',
-    image: 'recipe_images/Gnocchi-Sheetpan.jpeg',
+    image: 'recipe_images/Sheet_Pan_Gnocchi.jpeg',
     imagePosition: 'center center',
     tags: ['Italian', 'Pork'],
     serves: '4',
@@ -352,7 +352,7 @@ window.RECIPES = [
   {
     id: 'thai-red-curry',
     title: 'Thai Red Curry with Chicken and Eggplant',
-    image: 'recipe_images/thai-red-curry.jpg',
+    image: 'recipe_images/Thai_Red_Curry.jpeg',
     tags: ['Thai', 'Chicken', 'Comfort Food'],
     serves: '2–3',
     calories: '~480 calories per serving',
@@ -570,7 +570,7 @@ window.RECIPES = [
   {
     id: 'nikujaga-stew',
     title: 'Nikujaga-Style Chicken & Potato Stew',
-    image: 'recipe_images/Nikujaga_Stew.jpg',
+    image: 'recipe_images/Nikujaga_Style.jpeg',
     tags: ['Japanese', 'Chicken', 'Soup', 'Comfort Food', 'One Pot'],
     serves: '4',
     calories: '~380 calories per serving',
@@ -590,5 +590,65 @@ window.RECIPES = [
       'Ladle into bowls and garnish generously with sliced scallions. Serve as-is for a low-carb meal, or with a small bowl of steamed rice on the side.'
     ],
     notes: 'Using boneless skinless chicken thighs instead of the traditional beef keeps this lean while maintaining rich flavor. The potatoes and carrots are high in fiber and very satiating — this stew is filling enough that you won\'t need much rice alongside. Nikujaga actually tastes better the next day as the flavors meld overnight, making it great for meal prep. If you can\'t find dashi stock, low-sodium chicken broth works as a substitute, though the flavor will be slightly less delicate.'
+  },
+  {
+    id: 'spicy-garlic-noodles',
+    title: 'Spicy Garlic Noodles',
+    image: 'https://placehold.co/600x450/e8e0d5/8a7f70?text=Spicy+Garlic+Noodles',
+    tags: ['Korean', 'Noodles'],
+    serves: '1–2',
+    calories: '~500 calories per serving',
+    ingredients: [
+      { group: '', items: ['100 g extra firm tofu', '4–5 cloves garlic', 'Small piece of ginger', '3 green onions', '3 tbsp avocado oil', '3 tsp dark soy sauce', '150 g knife-pared noodles', '1 tbsp gochugaru', '1 tbsp plant-based oyster sauce'] }
+    ],
+    steps: [
+      'Pat dry the extra firm tofu with a paper towel, then mash into a crumble with a fork.',
+      'Finely chop the garlic, ginger, and green onions.',
+      'Heat a nonstick pan to medium heat. Add 1 tbsp avocado oil followed by the crumbled tofu. Sauté for 3–4 minutes.',
+      'Add 2 tsp dark soy sauce and sauté for another couple of minutes, then set the tofu aside.',
+      'Bring a pot of water to a boil for the noodles.',
+      'Place the nonstick pan back on medium-low heat. Add 2 tbsp avocado oil followed by the garlic and ginger. Cook for about 2 minutes.',
+      'When the water comes to a boil, cook the noodles for 1 minute less than the package instructions (in this case, 3 minutes). Stir occasionally to keep them from sticking.',
+      'Add the gochugaru to the garlic and ginger and cook for about 1 minute, then add the oyster sauce.',
+      'Strain the noodles and add them to the pan. Add 1 tsp dark soy sauce and the crumbled tofu. Turn the heat up to medium and sauté for 2–3 minutes. Add the green onions and sauté for another minute.'
+    ]
+  },
+  {
+    id: 'rice-cooker-bibimbap',
+    title: 'Rice Cooker Bibimbap',
+    image: 'https://placehold.co/600x450/e8e0d5/8a7f70?text=Rice+Cooker+Bibimbap',
+    tags: ['Korean', 'Rice'],
+    serves: '2',
+    calories: '~600 calories per serving',
+    ingredients: [
+      { group: '', items: ['½ lb protein of choice (e.g. steak, chicken), sliced', '5 shiitake mushrooms, soaked and sliced', '1 carrot, thinly sliced', '½ cup bean sprouts', '½ cup spinach', '1 cup short grain rice + 1 cup mushroom dashi (or just water)'] },
+      { group: 'Bibim sauce', items: ['2 tbsp gochujang', '1 tbsp sugar', '1 tbsp sesame oil', '1 tsp rice vinegar', '1 clove garlic, grated or finely minced', '1 tsp sesame seeds'] }
+    ],
+    steps: [
+      'Re-hydrate the shiitake mushrooms.',
+      'While the mushrooms are re-hydrating, thinly slice the carrot.',
+      'Afterwards, thinly slice the hydrated mushrooms and cut your choice of protein.',
+      'Add everything into the rice cooker, starting with the rice and then the rest of your ingredients.',
+      'Cook using the Instant Pot rice function.',
+      'While that cooks, make your bibimbap sauce.',
+      'Pour the sauce all over and mix.'
+    ]
+  },
+  {
+    id: 'rice-cooker-chana',
+    title: 'Rice Cooker Chana',
+    image: 'https://placehold.co/600x450/e8e0d5/8a7f70?text=Rice+Cooker+Chana',
+    tags: ['Indian'],
+    serves: '5',
+    calories: '~340 calories per serving',
+    ingredients: [
+      { group: '', items: ['3 cups cooked chickpeas', '1 cup crushed tomatoes', '1 tbsp ginger, minced', '1 × 400 mL can coconut milk', '1.5 tbsp cumin', '1 tsp cinnamon', '½ tsp nutmeg', '1 tsp chilli powder', '1 tsp ground black pepper', '2 tsp curry powder', '2 tsp sea salt', '2 tsp sugar'] }
+    ],
+    steps: [
+      'Add all ingredients to your rice cooker.',
+      'Mix well.',
+      'Cook on the white rice or mixed setting.',
+      'That\'s it — serve and enjoy your chana.'
+    ]
   }
 ];
