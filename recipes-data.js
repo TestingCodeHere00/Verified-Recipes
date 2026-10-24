@@ -372,7 +372,7 @@ window.RECIPES = [
   {
     id: 'beef-pepper-rice',
     title: 'Beef Pepper Rice',
-    image: 'recipe_images/beef-pepper-rice.jpg',
+    image: 'recipe_images/Beef_Pepper_Rice.jpeg',
     tags: ['Japanese', 'Beef', 'Rice', 'Easy', 'Weeknight'],
     serves: '2',
     calories: '~650 calories per serving',
@@ -548,7 +548,7 @@ window.RECIPES = [
   {
     id: 'mapo-tofu',
     title: 'Mapo Tofu',
-    image: 'recipe_images/mapo-tofu.jpg',
+    image: 'recipe_images/Mapo.jpeg',
     tags: ['Chinese', 'Pork', 'Comfort Food'],
     serves: '2–3',
     calories: '~380 calories per serving',
@@ -649,6 +649,30 @@ window.RECIPES = [
       'Mix well.',
       'Cook on the white rice or mixed setting.',
       'That\'s it — serve and enjoy your chana.'
+    ]
+  },
+  {
+    id: 'miso-coconut-fish',
+    title: 'Miso Coconut Fish',
+    image: 'recipe_images/Miso_Coconut_Fish.jpeg',
+    tags: ['Japanese', 'Seafood'],
+    serves: '2–3',
+    calories: '~520 calories per serving',
+    ingredients: [
+      { group: '', items: ['~1 lb white fish (cod), cut into filets', 'White rice, for serving', '16 oz green spinach', '1 white onion, thinly sliced', '3 cloves garlic, finely chopped', '2 green Serrano chili peppers, finely chopped', '1 inch fresh ginger, finely chopped', '1 can (13.5 oz) coconut milk', '4 tsp white miso paste', '1 tbsp low sodium soy sauce', '1 tbsp oyster sauce', '1 tbsp olive oil', 'Salt', 'Pepper'] },
+      { group: 'To finish', items: ['Cilantro', 'Chili oil crunch', '½ lime (juice)'] }
+    ],
+    steps: [
+      'Slice the fish into filets, pat dry, and season with salt and pepper. Let the fish sit in the fridge while you work on everything else.',
+      'Prep your broth mix-ins: slice the onion and chop the ginger, garlic, and peppers.',
+      'Heat a pan over medium-low heat, add some olive oil, and add the sliced onion.',
+      'Cook down the onion for about 5 minutes, then add the garlic, ginger, and peppers. Cook these down for another few minutes.',
+      'Add the miso paste, soy sauce, and oyster sauce and combine.',
+      'Add the coconut milk, lower the heat a bit, and bring to a simmer.',
+      'Add the cod filets and cover the pan for 5–6 minutes.',
+      'Once the cod is flaky, remove it and add the spinach. Cook the spinach down into the broth.',
+      'Serve the cod and broth on top of some white rice.',
+      'Top with cilantro, lime juice, and chili oil crunch.'
     ]
   }
 ];
